@@ -1,23 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+		<RuntimeFrameworkVersion>2.1.25</RuntimeFrameworkVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Authors>petertsu@github</Authors>
+		<Authors>petertsu@github,cinias@o2.pl</Authors>
 		<Product>ClamAV.Net</Product>
-		<Version>0.1.0</Version>
-		<FileVersion>0.1.0</FileVersion>
+		<Version>0.2.0-makit</Version>
+		<FileVersion>0.2.0-makit</FileVersion>
 		<VersionSuffix>alpha</VersionSuffix>
 		<InformationalVersion>This is a prerelease package</InformationalVersion>
 		<RepositoryUrl>https://github.com/petertsu/ClamAV.Net</RepositoryUrl>
-	    <Title>The ClamAV server .NETStandard client</Title>
+	    <Title>The ClamAV server .NETCore client</Title>
 	    <PackageId>ClamAV.Net</PackageId>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageProjectUrl>https://github.com/petertsu/ClamAV.Net</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Description>The ClamAV server .NETStandard client</Description>
+		<Description>The ClamAV server .NETCore client</Description>
 		<PackageTags>clamav virus clam clamd</PackageTags>
 		<Copyright>Copyright 2020 petertsu@github</Copyright>
-		<Summary>The ClamAV server .NETStandard client</Summary>
+		<Summary>The ClamAV server .NETCore client</Summary>
 		<ProjectGuid>4E284927-EFC1-443E-BC27-D598404ACE71</ProjectGuid>
 	</PropertyGroup>
 	<PropertyGroup>

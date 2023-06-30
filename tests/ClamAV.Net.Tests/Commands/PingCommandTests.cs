@@ -22,16 +22,17 @@ namespace ClamAV.Net.Tests.Commands
         public async Task WriteCommandAsync_Should_Write_CommandName()
         {
             PingCommand pingCommand = new PingCommand();
-            await using MemoryStream memoryStream = new MemoryStream();
+            using (MemoryStream memoryStream = new MemoryStream())
+            { 
+                await pingCommand.WriteCommandAsync(memoryStream).ConfigureAwait(false);
 
-            await pingCommand.WriteCommandAsync(memoryStream).ConfigureAwait(false);
+                byte[] commandData = memoryStream.ToArray();
 
-            byte[] commandData = memoryStream.ToArray();
+                string actual = Encoding.UTF8.GetString(commandData);
 
-            string actual = Encoding.UTF8.GetString(commandData);
-
-            actual.Should()
-                .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{pingCommand.Name}{(char)Consts.TERMINATION_BYTE}");
+                actual.Should()
+                    .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{pingCommand.Name}{(char)Consts.TERMINATION_BYTE}");
+            }
         }
 
         [Theory]

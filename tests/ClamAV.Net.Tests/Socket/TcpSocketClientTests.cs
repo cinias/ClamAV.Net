@@ -47,12 +47,14 @@ namespace ClamAV.Net.Tests.Socket
             {
                 clamAvServerMock.Start(() => "PONG");
 
-                using TcpSocketClient client = new TcpSocketClient(new ClamAvSettings("127.0.0.1", port, readBufferSize), NullLogger<TcpSocketClient>.Instance);
-                await client.ConnectAsync().ConfigureAwait(false);
+                using (TcpSocketClient client = new TcpSocketClient(new ClamAvSettings("127.0.0.1", port, readBufferSize), NullLogger<TcpSocketClient>.Instance))
+                { 
+                    await client.ConnectAsync().ConfigureAwait(false);
 
-                string result = await client.SendCommandAsync(new PingCommand()).ConfigureAwait(false);
+                    string result = await client.SendCommandAsync(new PingCommand()).ConfigureAwait(false);
 
-                result.Should().Be("PONG");
+                    result.Should().Be("PONG");
+                }
             }
             finally
             {

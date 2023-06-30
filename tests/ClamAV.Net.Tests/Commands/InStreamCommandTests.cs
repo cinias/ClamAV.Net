@@ -83,28 +83,32 @@ namespace ClamAV.Net.Tests.Commands
         {
             byte[] dataToScan = { 1, 2, 3, 4, 5 };
 
-            await using MemoryStream dataStream = new MemoryStream(dataToScan);
-            await using MemoryStream commandProcessStream = new MemoryStream();
+            using (MemoryStream dataStream = new MemoryStream(dataToScan))
+            { 
+                using (MemoryStream commandProcessStream = new MemoryStream())
+                { 
 
-            InStreamCommand inStreamCommand = new InStreamCommand(dataStream);
+                    InStreamCommand inStreamCommand = new InStreamCommand(dataStream);
 
-            await inStreamCommand.WriteCommandAsync(commandProcessStream).ConfigureAwait(false);
+                    await inStreamCommand.WriteCommandAsync(commandProcessStream).ConfigureAwait(false);
 
-            byte[] actualCommandData = commandProcessStream.ToArray();
+                    byte[] actualCommandData = commandProcessStream.ToArray();
 
-            string actualCommandName = Encoding.UTF8.GetString(actualCommandData, 0, inStreamCommand.Name.Length + 2);
+                    string actualCommandName = Encoding.UTF8.GetString(actualCommandData, 0, inStreamCommand.Name.Length + 2);
 
-            actualCommandName.Should()
-                .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{inStreamCommand.Name}{(char)Consts.TERMINATION_BYTE}");
+                    actualCommandName.Should()
+                        .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{inStreamCommand.Name}{(char)Consts.TERMINATION_BYTE}");
 
-            actualCommandData.Skip(actualCommandData.Length - 4).Should()
-                .BeEquivalentTo(new byte[] { 0, 0, 0, 0 }, "Termination bytes should exist");
+                    actualCommandData.Skip(actualCommandData.Length - 4).Should()
+                        .BeEquivalentTo(new byte[] { 0, 0, 0, 0 }, "Termination bytes should exist");
 
-            actualCommandData.Skip(inStreamCommand.Name.Length + 2).SkipLast(4).Skip(4).Should()
-                .BeEquivalentTo(dataToScan, "Scan data should be equal");
+                    actualCommandData.Skip(inStreamCommand.Name.Length + 2).SkipLast(4).Skip(4).Should()
+                        .BeEquivalentTo(dataToScan, "Scan data should be equal");
 
-            actualCommandData.Skip(inStreamCommand.Name.Length + 2).Take(4).Should()
-                .BeEquivalentTo(new byte[] { 0, 0, 0, 5 }, "Scan data size should be valid");
+                    actualCommandData.Skip(inStreamCommand.Name.Length + 2).Take(4).Should()
+                        .BeEquivalentTo(new byte[] { 0, 0, 0, 5 }, "Scan data size should be valid");
+                }
+            }
         }
     }
 }

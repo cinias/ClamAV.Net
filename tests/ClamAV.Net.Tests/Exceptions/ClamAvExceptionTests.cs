@@ -32,14 +32,16 @@ namespace ClamAV.Net.Tests.Exceptions
 
             BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-            using MemoryStream memoryStream = new MemoryStream();
-            binaryFormatter.Serialize(memoryStream, clamAvException);
-            memoryStream.Seek(0, SeekOrigin.Begin);
+            using (MemoryStream memoryStream = new MemoryStream())
+            { 
+                binaryFormatter.Serialize(memoryStream, clamAvException);
+                memoryStream.Seek(0, SeekOrigin.Begin);
 
-            ClamAvException actual = binaryFormatter.Deserialize(memoryStream) as ClamAvException;
+                ClamAvException actual = binaryFormatter.Deserialize(memoryStream) as ClamAvException;
 
-            actual.Should().NotBeNull();
-            actual.Should().BeEquivalentTo(clamAvException);
+                actual.Should().NotBeNull();
+                actual.Should().BeEquivalentTo(clamAvException);
+            }
         }
     }
 }

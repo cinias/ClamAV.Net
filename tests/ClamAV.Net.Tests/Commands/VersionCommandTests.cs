@@ -24,16 +24,17 @@ namespace ClamAV.Net.Tests.Commands
         public async Task WriteCommandAsync_Should_Write_CommandName()
         {
             VersionCommand versionCommand = new VersionCommand();
-            await using MemoryStream memoryStream = new MemoryStream();
+            using (MemoryStream memoryStream = new MemoryStream())
+            { 
+                await versionCommand.WriteCommandAsync(memoryStream).ConfigureAwait(false);
 
-            await versionCommand.WriteCommandAsync(memoryStream).ConfigureAwait(false);
+                byte[] commandData = memoryStream.ToArray();
 
-            byte[] commandData = memoryStream.ToArray();
+                string actual = Encoding.UTF8.GetString(commandData);
 
-            string actual = Encoding.UTF8.GetString(commandData);
-
-            actual.Should()
-                .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{versionCommand.Name}{(char)Consts.TERMINATION_BYTE}");
+                actual.Should()
+                    .Be($"{Consts.COMMAND_PREFIX_CHARACTER}{versionCommand.Name}{(char)Consts.TERMINATION_BYTE}");
+            }
         }
 
         [Theory]

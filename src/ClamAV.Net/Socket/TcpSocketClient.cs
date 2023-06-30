@@ -44,30 +44,31 @@ namespace ClamAV.Net.Socket
 
         private async Task<byte[]> ReadResponse(CancellationToken cancellationToken)
         {
-            await using MemoryStream memoryStream = new MemoryStream();
-
-            do
+            using (var memoryStream = new MemoryStream())
             {
-                byte[] answerBytes = new byte[mClamAvSettings.ReadBufferSize];
-
-                int numBytesRead;
-
-                while ((numBytesRead = await mNetworkStream
-                    .ReadAsync(answerBytes, 0, answerBytes.Length, cancellationToken)
-                    .ConfigureAwait(false)) > 0)
+                do
                 {
-                    if (numBytesRead < answerBytes.Length &&
-                        answerBytes[numBytesRead - 1] == Consts.TERMINATION_BYTE)
+                    byte[] answerBytes = new byte[mClamAvSettings.ReadBufferSize];
+
+                    int numBytesRead;
+
+                    while ((numBytesRead = await mNetworkStream
+                        .ReadAsync(answerBytes, 0, answerBytes.Length, cancellationToken)
+                        .ConfigureAwait(false)) > 0)
                     {
-                        memoryStream.Write(answerBytes, 0, numBytesRead - 1);
-                        break;
+                        if (numBytesRead < answerBytes.Length &&
+                            answerBytes[numBytesRead - 1] == Consts.TERMINATION_BYTE)
+                        {
+                            memoryStream.Write(answerBytes, 0, numBytesRead - 1);
+                            break;
+                        }
+
+                        memoryStream.Write(answerBytes, 0, numBytesRead);
                     }
+                } while (mClient.Available > 0);
 
-                    memoryStream.Write(answerBytes, 0, numBytesRead);
-                }
-            } while (mClient.Available > 0);
-
-            return memoryStream.ToArray();
+                return memoryStream.ToArray();
+            }
         }
 
         public async Task SendCommandAsync(ICommand command, CancellationToken cancellationToken = default)

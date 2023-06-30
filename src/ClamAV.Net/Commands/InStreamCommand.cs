@@ -69,7 +69,7 @@ namespace ClamAV.Net.Commands
                     new ClamAvException($"Invalid raw response '{actualResponse}'");
             }
 
-            return new ScanResult(true, responseParts[^2]);
+            return new ScanResult(true, responseParts[responseParts.Length - 2]);
         }
     }
 }
