@@ -5,8 +5,8 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>petertsu@github,cinias@o2.pl</Authors>
 		<Product>ClamAV.Net</Product>
-		<Version>0.2.0-makit</Version>
-		<FileVersion>0.2.0-makit</FileVersion>
+		<Version>0.2.1-makit</Version>
+		<FileVersion>0.2.1-makit</FileVersion>
 		<VersionSuffix>alpha</VersionSuffix>
 		<InformationalVersion>This is a prerelease package</InformationalVersion>
 		<RepositoryUrl>https://github.com/petertsu/ClamAV.Net;https://github.com/cinias/ClamAV.Net</RepositoryUrl>
