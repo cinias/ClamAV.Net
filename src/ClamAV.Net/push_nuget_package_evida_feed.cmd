@@ -1,0 +1,2 @@
+dotnet nuget add source https://pkgs.dev.azure.com/mak-it/eVida/_packaging/evida-feed/nuget/v3/index.json --username ###username### --source eVida --password ###PAT### --configfile ./NuGet.config
+dotnet nuget push bin/Debug/ClamAV.Net.0.2.1-makit.nupkg --api-key AZ --source eVida
